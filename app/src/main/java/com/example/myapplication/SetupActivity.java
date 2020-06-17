@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -89,7 +91,14 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String image = dataSnapshot.child("profileimage").getValue().toString();
+
+                    if(dataSnapshot.hasChild("profileimage")) {
+                        String image = dataSnapshot.child("profileimage").getValue().toString();
+
+                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
+                    }else{
+                        Toast.makeText(SetupActivity.this, "Please select a profile image",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -104,58 +113,73 @@ public class SetupActivity extends AppCompatActivity {
     // I DON'T REALLY UNDERSTAND THIS PART ! ! ! ! ! !
     // https://www.youtube.com/watch?v=Ef8DyErZhII&list=PLxefhmF0pcPnTQ2oyMffo6QbWtztXu1W_&index=14
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode== Gallery_Pick && resultCode == RESULT_OK && data!=null){
+        // some conditions for the picture
+        if(requestCode==Gallery_Pick && resultCode==RESULT_OK && data!=null)
+        {
             Uri ImageUri = data.getData();
-            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
+            // crop the image
+            CropImage.activity(ImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
         }
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        // Get the cropped image
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {       // store the cropped image into result
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if(requestCode==RESULT_OK){
 
+            if(resultCode == RESULT_OK)
+            {
                 loadingBar.setTitle("Profile Image");
-                loadingBar.setMessage("Please wait while we are updating your profile image...");
+                loadingBar.setMessage("Please wait, while we updating your profile image...");
                 loadingBar.show();
                 loadingBar.setCanceledOnTouchOutside(true);
 
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                final StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
+
+                filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(SetupActivity.this,"Profile image uploaded successfully",Toast.LENGTH_SHORT).show();
-                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                final String downloadUrl = uri.toString();
+                                UsersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
 
-                            UsersRef.child("profileImage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
+                                            //(These next 2 lines of code are not needed.
+                                            // They actually make the app jump unnecessarily and it still functions without them.
+                                            // In other words, you don't have to run this intent again.
+                                            // After the pic posts, you are still on setupActivity.  Just go right to the Toast)
 
-                                        Intent selfIntent = new Intent(SetupActivity.this,SetupActivity.class);
-                                        startActivity(selfIntent);
-
-                                        Toast.makeText(SetupActivity.this,"Profile image uploaded successfully",Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
-                                    }else{
-                                        String message = task.getException().getMessage();
-                                        Toast.makeText(SetupActivity.this,"Error occurred: "+message,Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
-
+                                            Toast.makeText(SetupActivity.this, "Image Stored", Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                        else {
+                                            String message = task.getException().getMessage();
+                                            Toast.makeText(SetupActivity.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
 
-                        }
+                        });
+
                     }
+
                 });
-
-
-            }else{
-                Toast.makeText(SetupActivity.this,"Error occurred: Image cannot be cropped.",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, "Error Occured: Image can not be cropped. Try Again.", Toast.LENGTH_SHORT).show();
                 loadingBar.dismiss();
             }
         }
