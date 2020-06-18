@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,6 +28,7 @@ import android.renderscript.Sampler;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,7 +178,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private static int save = -1;
+
     private void UserMenuSelector(MenuItem item){
+
         switch (item.getItemId()){
             case R.id.nav_profile:
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
