@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".RestaurantListActivity"></activity>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".SetupActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

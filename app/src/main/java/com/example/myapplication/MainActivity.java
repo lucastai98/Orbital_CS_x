@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Find Friends",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
+                SendUserToSettingsActivity();
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
@@ -203,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
                 SendUserToLoginActivity();
                 break;
         }
+    }
+
+    private void SendUserToSettingsActivity() {
+        Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     @Override
