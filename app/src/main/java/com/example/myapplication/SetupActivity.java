@@ -203,9 +203,6 @@ public class SetupActivity extends AppCompatActivity {
             HashMap userMap = new HashMap();
             userMap.put("username", username);
             userMap.put("fullname", fullname);
-            userMap.put("status", "Hi, I am using No Apples Today");
-            userMap.put("gender", "Not Selected");
-            userMap.put("dob", "None");
 
             UsersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override

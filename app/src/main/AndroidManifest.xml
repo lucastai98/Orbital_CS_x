@@ -14,9 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RestaurantListActivity"></activity>
-        <activity android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".FindFriendsActivity"></activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity"
+            />
+        <activity android:name=".RestaurantListActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".SetupActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
