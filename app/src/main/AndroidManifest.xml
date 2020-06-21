@@ -14,11 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindFriendsActivity"></activity>
+        <activity android:name=".PersonProfileActivity"
+            android:parentActivityName=".FindFriendsActivity"></activity>
+        <activity
+            android:name=".FindFriendsActivity"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity"
-            />
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".RestaurantListActivity" />
         <activity
             android:name=".SettingsActivity"
