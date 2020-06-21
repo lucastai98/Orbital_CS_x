@@ -128,5 +128,6 @@ public class FindFriendsActivity extends AppCompatActivity {
             myUsername.setText("@"+username);
         }
 
+
     }
 }
