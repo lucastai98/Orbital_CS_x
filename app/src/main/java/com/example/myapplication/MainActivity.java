@@ -202,11 +202,21 @@ public class MainActivity extends AppCompatActivity {
                 SendUserToSettingsActivity();
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_find_restaurants:
+                SendUserToRestaurantListActivity();
+                Toast.makeText(this,"Find Restaurants",Toast.LENGTH_SHORT).show();
+                break;
             case R.id.nav_logout:
                 mAuth.signOut();
                 SendUserToLoginActivity();
                 break;
         }
+    }
+
+    private void SendUserToRestaurantListActivity() {
+        Intent settingsIntent = new Intent(MainActivity.this, RestaurantListActivity.class);
+        startActivity(settingsIntent);
+
     }
 
     private void SendUserToSettingsActivity() {
