@@ -17,9 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -37,6 +41,9 @@ public class RestaurantListActivity extends AppCompatActivity {
 
     private RecyclerView SearchResultList;
 
+    private boolean favouriteChecker;
+
+    private String currentUserId;
     private DatabaseReference allRestaurantsDatabaseReference;
 
     @Override
@@ -51,7 +58,7 @@ public class RestaurantListActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Restaurants");
 
         allRestaurantsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
-
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         SearchResultList = (RecyclerView) findViewById(R.id.search_restaurants_list);
         SearchResultList.setHasFixedSize(true);
@@ -71,31 +78,6 @@ public class RestaurantListActivity extends AppCompatActivity {
         });
     }
 
-//    public void order(View v){
-//        try{
-//
-//            AssetManager AM = getAssets();
-//            InputStream IS = AM.open("Cuisines and Restaurants.xlsx");
-//            Workbook WB = Workbook.getWorkbook(IS);
-//            Sheet S = WB.getSheet(0);
-//            int rows = S.getRows();
-//            int cols = S.getColumns();
-//
-//            String info = "";
-//
-//            for (int r=0;r<rows;r++){
-//                for (int c=0;c<cols;c++){
-//                    Cell cell = S.getCell(c,r);
-//                    info = cell.getContents();
-//                }
-//            }
-//
-//
-//        }catch(Exception e){
-//
-//        }
-//    }
-
     private void SearchRestaurants(String searchBoxInput) {
         Toast.makeText(this,"Searching...",Toast.LENGTH_SHORT).show();
 
@@ -112,22 +94,50 @@ public class RestaurantListActivity extends AppCompatActivity {
         {
 
             @Override
-            protected void populateViewHolder(RestaurantListActivity.FindRestaurantsViewHolder viewHolder, FindRestaurants find, final int i) {
+            protected void populateViewHolder(RestaurantListActivity.FindRestaurantsViewHolder viewHolder, final FindRestaurants find, final int i) {
                 viewHolder.setName(find.getName());
                 viewHolder.setLocation(find.getMall()+", "+find.getUnit());
                 viewHolder.setRestaurantPicture(find.getImagelink());
                 viewHolder.setType(find.getCuisineone()+", "+find.getCuisinetwo());
 
-//                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        String visit_user_id = getRef(i).getKey();
-//
-//                        Intent profileIntent = new Intent(FindFriendsActivity.this,PersonProfileActivity.class);
-//                        profileIntent.putExtra("visit_user_id",visit_user_id);
-//                        startActivity(profileIntent);
-//                    }
-//                });
+                viewHolder.setFavouriteButtonStatus(currentUserId, find);
+
+                viewHolder.favouriteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        favouriteChecker = true;
+
+                        final DatabaseReference RestaurantRef = allRestaurantsDatabaseReference.child("Restaurant "+find.id).child("favourites");
+
+                        RestaurantRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(favouriteChecker) {
+                                    if (dataSnapshot.hasChild(currentUserId)) {
+
+                                        RestaurantRef.child(currentUserId).removeValue();
+                                        favouriteChecker = false;
+
+                                    } else {
+
+                                        RestaurantRef.child(currentUserId).setValue(true);
+                                        favouriteChecker = false;
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        allRestaurantsDatabaseReference.child("Restaurant "+find.id).child("favourites").child(currentUserId).setValue(true);
+
+                    }
+                });
+
             }
         };
 
@@ -137,9 +147,13 @@ public class RestaurantListActivity extends AppCompatActivity {
     public static class FindRestaurantsViewHolder extends RecyclerView.ViewHolder{
         View mView;
 
+        ImageButton favouriteButton;
+
         public FindRestaurantsViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+
+            favouriteButton = (ImageButton) mView.findViewById(R.id.favourite_button);
         }
 
         public void setRestaurantPicture(String url) {
@@ -161,6 +175,29 @@ public class RestaurantListActivity extends AppCompatActivity {
         }
 
 
+        public void setFavouriteButtonStatus(final String currentUserId, FindRestaurants currentRestaurant) {
+
+            DatabaseReference RestaurantRef = FirebaseDatabase.getInstance().getReference().child("Restaurants").child("Restaurant "+currentRestaurant.id).child("favourites");
+
+            RestaurantRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if(dataSnapshot.hasChild(currentUserId)){
+                        favouriteButton.setImageResource(R.drawable.redheart);
+                    }else{
+                        favouriteButton.setImageResource(R.drawable.greyheart);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 
 }

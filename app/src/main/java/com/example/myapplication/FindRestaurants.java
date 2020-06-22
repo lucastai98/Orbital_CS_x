@@ -2,8 +2,9 @@ package com.example.myapplication;
 
 public class FindRestaurants {
     public String asianorwestern, cuisineone,cuisinetwo,cuisinethree, imagelink , name, mall, unit;
+    long id;
 
-    public FindRestaurants(String asianorwestern, String cuisineone, String cuisinetwo, String cuisinethree, String imagelink, String name, String mall, String unit) {
+    public FindRestaurants(String asianorwestern, String cuisineone, String cuisinetwo, String cuisinethree, String imagelink, String name, String mall, String unit, long id) {
         this.asianorwestern = asianorwestern;
         this.cuisineone = cuisineone;
         this.cuisinetwo = cuisinetwo;
@@ -12,7 +13,17 @@ public class FindRestaurants {
         this.name = name;
         this.mall = mall;
         this.unit = unit;
+        this.id = id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     public FindRestaurants(){
 
     }
