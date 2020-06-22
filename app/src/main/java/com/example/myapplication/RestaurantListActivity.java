@@ -99,7 +99,7 @@ public class RestaurantListActivity extends AppCompatActivity {
     private void SearchRestaurants(String searchBoxInput) {
         Toast.makeText(this,"Searching...",Toast.LENGTH_SHORT).show();
 
-        Query searchRestaurantsQuery = allRestaurantsDatabaseReference.orderByChild("name:").startAt(searchBoxInput).endAt(searchBoxInput+"\uf8ff");
+        Query searchRestaurantsQuery = allRestaurantsDatabaseReference.orderByChild("name").startAt(searchBoxInput).endAt(searchBoxInput+"\uf8ff");
 
         FirebaseRecyclerAdapter<FindRestaurants, FindRestaurantsViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<FindRestaurants, FindRestaurantsViewHolder>
@@ -114,9 +114,9 @@ public class RestaurantListActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(RestaurantListActivity.FindRestaurantsViewHolder viewHolder, FindRestaurants find, final int i) {
                 viewHolder.setName(find.getName());
-                viewHolder.setLocation(find.getLocation());
-                viewHolder.setRestaurantPicture(getApplicationContext(), find.getPicture());
-                viewHolder.setType(find.getType());
+                viewHolder.setLocation(find.getMall()+", "+find.getUnit());
+                viewHolder.setRestaurantPicture(find.getImagelink());
+                viewHolder.setType(find.getCuisineone()+", "+find.getCuisinetwo());
 
 //                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -142,9 +142,9 @@ public class RestaurantListActivity extends AppCompatActivity {
             mView = itemView;
         }
 
-        public void setRestaurantPicture(Context applicationContext, String profileimage) {
+        public void setRestaurantPicture(String url) {
             CircleImageView myImage = (CircleImageView) mView.findViewById(R.id.all_restaurants_profile_image);
-            Picasso.get().load(profileimage).placeholder(R.drawable.profile).into(myImage);
+            Picasso.get().load(url).placeholder(R.drawable.profile).into(myImage);
         }
         public void setName (String currentName){
             TextView Name = (TextView) mView.findViewById(R.id.all_restaurants_name);

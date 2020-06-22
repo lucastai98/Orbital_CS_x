@@ -1,44 +1,83 @@
 package com.example.myapplication;
 
 public class FindRestaurants {
-    public String picture, name, location, type;
+    public String asianorwestern, cuisineone,cuisinetwo,cuisinethree, imagelink , name, mall, unit;
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public FindRestaurants(String asianorwestern, String cuisineone, String cuisinetwo, String cuisinethree, String imagelink, String name, String mall, String unit) {
+        this.asianorwestern = asianorwestern;
+        this.cuisineone = cuisineone;
+        this.cuisinetwo = cuisinetwo;
+        this.cuisinethree = cuisinethree;
+        this.imagelink = imagelink;
+        this.name = name;
+        this.mall = mall;
+        this.unit = unit;
+    }
+    public FindRestaurants(){
+
+    }
+
+    public void setAsianorwestern(String asianorwestern) {
+        this.asianorwestern = asianorwestern;
+    }
+
+    public void setCuisineone(String cuisineone) {
+        this.cuisineone = cuisineone;
+    }
+
+    public void setCuisinetwo(String cuisinetwo) {
+        this.cuisinetwo = cuisinetwo;
+    }
+
+    public void setCuisinethree(String cuisinethree) {
+        this.cuisinethree = cuisinethree;
+    }
+
+    public void setImagelink(String imagelink) {
+        this.imagelink = imagelink;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setMall(String mall) {
+        this.mall = mall;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getAsianorwestern() {
+        return asianorwestern;
+    }
+
+    public String getCuisineone() {
+        return cuisineone;
+    }
+
+    public String getCuisinetwo() {
+        return cuisinetwo;
+    }
+
+    public String getCuisinethree() {
+        return cuisinethree;
+    }
+
+    public String getImagelink() {
+        return imagelink;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getMall() {
+        return mall;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public FindRestaurants(String picture, String name, String location, String type) {
-        this.picture = picture;
-        this.name = name;
-        this.location = location;
-        this.type = type;
+    public String getUnit() {
+        return unit;
     }
 }

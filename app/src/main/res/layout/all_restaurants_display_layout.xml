@@ -18,7 +18,8 @@
         android:layout_width="85dp"
         android:layout_marginLeft="10dp"
         android:src="@drawable/profile"
-        android:layout_height="85dp" />
+        android:layout_height="85dp"
+        android:background="@drawable/inputs"/>
 
     <LinearLayout
         android:id="@+id/textLayout"
