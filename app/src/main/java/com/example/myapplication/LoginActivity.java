@@ -38,10 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog loadingBar;
 
     private static final int RC_SIGN_IN = 1;
-    private GoogleApiClient mGoogleSignInClient;
     private static final String TAG = "LoginActivity";
 
-    private ImageView googleSignInButton;
 
 
     @Override
@@ -53,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         UserEmail = (EditText) findViewById(R.id.register_email);
         UserPassword = (EditText) findViewById(R.id.register_password);
         LoginButton = (Button) findViewById(R.id.register_create_account);
-        googleSignInButton = (ImageView) findViewById(R.id.google_signin_button);
         mAuth = FirebaseAuth.getInstance();
         loadingBar = new ProgressDialog(this);
 
@@ -71,81 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this,"Connection to Google Sign in failed",Toast.LENGTH_SHORT).show();
-
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
-        googleSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
     }
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            loadingBar.setTitle("Google Sign in");
-            loadingBar.setMessage("Please wait while we log you in with your Google account");
-            loadingBar.setCanceledOnTouchOutside(true);
-            loadingBar.show();
-
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-            if(result.isSuccess()){
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-                Toast.makeText(this,"Please wait while we are getting your authentication",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this,"Cannot get authentication",Toast.LENGTH_SHORT).show();
-                loadingBar.dismiss();
-
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount idToken) {
-        Log.d(TAG,"firebaseAuthWithGoogle:"+idToken.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
-                            SendUserToMainActivity();
-                            loadingBar.dismiss();
-                        } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            String message = task.getException().toString();
-                            SendUserToLoginActivity();
-                            Toast.makeText(LoginActivity.this,"Not Authenticated: "+message,Toast.LENGTH_SHORT).show();
-                            loadingBar.dismiss();
-
-                        }
-
-                    }
-                });
-    }
-
 
     @Override
     protected void onStart(){
