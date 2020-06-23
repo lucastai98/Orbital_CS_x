@@ -49,7 +49,6 @@ public class FriendsActivity extends AppCompatActivity {
         online_user_id = mAuth.getCurrentUser().getUid();
         FriendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(online_user_id);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        LikesRef = FirebaseDatabase.getInstance().getReference().child("Favourites");
 
         myFriendList = (RecyclerView) findViewById(R.id.friend_list);
 
@@ -81,6 +80,7 @@ public class FriendsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
+
                                     if(dataSnapshot.child("profileimage").getValue()==null) {
 
                                         final String profileImage = "drawable://" + R.drawable.profile;
