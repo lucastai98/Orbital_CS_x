@@ -81,13 +81,23 @@ public class FriendsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
+                                    if(dataSnapshot.child("profileimage").getValue()==null) {
+
+                                        final String profileImage = "drawable://" + R.drawable.profile;
+                                        friendsViewHolder.setProfileimage(getApplicationContext(),profileImage);
+
+                                    }else {
+
+                                        final String profileImage = dataSnapshot.child("profileimage").getValue().toString();
+                                        friendsViewHolder.setProfileimage(getApplicationContext(),profileImage);
+
+                                    }
+
                                     final String userName = dataSnapshot.child("fullname").getValue().toString();
                                     final String userUsername = dataSnapshot.child("username").getValue().toString();
-                                    final String profileImage = dataSnapshot.child("profileimage").getValue().toString();
 
                                     friendsViewHolder.setFullname(userName);
                                     friendsViewHolder.setUsername(userUsername);
-                                    friendsViewHolder.setProfileimage(getApplicationContext(),profileImage);
 
                                     friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                         @Override

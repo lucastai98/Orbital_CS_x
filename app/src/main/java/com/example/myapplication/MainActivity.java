@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             CheckUserExistence();
         }
-
     }
 
     private void CheckUserExistence(){
@@ -152,8 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void SendUserToSetupActivity() {
@@ -178,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private static int save = -1;
 
     private void UserMenuSelector(MenuItem item){
@@ -234,13 +232,6 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToFriendsActivity() {
         Intent FriendsIntent = new Intent(MainActivity.this, FriendsActivity.class);
         startActivity(FriendsIntent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
 }
