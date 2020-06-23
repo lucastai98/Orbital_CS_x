@@ -14,8 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FriendsActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AddFriendToGroupActivity"></activity>
+        <activity android:name=".GroupProfile" />
+        <activity android:name=".GroupsActivity" />
+        <activity
+            android:name=".FriendsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".PersonProfileActivity"
             android:parentActivityName=".FindFriendsActivity" />
@@ -25,8 +29,9 @@
         <activity
             android:name=".ProfileActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".RestaurantListActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".RestaurantListActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />

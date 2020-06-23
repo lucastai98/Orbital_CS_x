@@ -196,7 +196,6 @@ public class RestaurantListActivity extends AppCompatActivity {
 
                 }
             });
-
         }
     }
 
