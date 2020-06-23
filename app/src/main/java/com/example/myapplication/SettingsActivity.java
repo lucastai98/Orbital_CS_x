@@ -84,11 +84,18 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    if(dataSnapshot.child("profileimage").getValue()==null) {
+
+                        Picasso.get().load(R.drawable.profile).placeholder(R.drawable.profile).into(userProfImage);
+
+                    }else {
+                        String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                        Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfImage);
+
+                    }
+
                     String myUserName = dataSnapshot.child("username").getValue().toString();
                     String myFullName = dataSnapshot.child("fullname").getValue().toString();
-
-                    Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfImage);
 
                     userUsername.setText(myUserName);
                     userFullName.setText(myFullName);

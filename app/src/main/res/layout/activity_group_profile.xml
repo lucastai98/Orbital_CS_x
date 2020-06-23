@@ -12,6 +12,20 @@
 
     </include>
 
+    <ImageButton
+        android:id="@+id/favourite_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:scaleType= "centerCrop"
+        android:src="@drawable/addfriend"
+        android:background="@drawable/inputs"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp" />
+
     <TextView
         android:id="@+id/friend_group_name"
         android:layout_width="match_parent"
