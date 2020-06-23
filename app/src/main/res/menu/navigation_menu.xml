@@ -27,12 +27,12 @@
         android:title="Groups" />
 
     <item
-        android:id="@+id/favourite_cuisines"
-        android:title="Favourite Cuisines"/>
+        android:id="@+id/nav_cuisines"
+        android:title="Cuisines"/>
 <!--        android:icon="@drawable/home"/>-->
     <item
-        android:id="@+id/favourite_restaurants"
-        android:title="Favourite Restaurants"/>
+        android:id="@+id/nav_find_restaurants"
+        android:title="Find Restaurants"/>
 <!--        android:icon="@drawable/home"/>-->
     <item
         android:id="@+id/nav_settings"
