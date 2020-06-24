@@ -64,8 +64,6 @@ public class FindFriendsActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private void SearchPeopleAndFriends(String searchBoxInput) {
