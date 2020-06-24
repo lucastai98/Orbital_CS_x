@@ -35,8 +35,8 @@
                 android:layout_height="175dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/profile"
                 android:layout_marginLeft="30dp" />
 
@@ -50,7 +50,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/inputs"
                 android:hint="Username"
                 android:padding="14dp"
@@ -84,13 +84,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="50dp"
                 android:background = "@drawable/button"
                 android:padding="10dp"
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"/>
+                android:textSize="22sp"/>
 
         </RelativeLayout>
 
