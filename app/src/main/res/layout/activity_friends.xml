@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FriendsActivity"
-    android:background="@color/colorProfile">
+    android:background="@color/colorThis">
+
     <include
         android:id="@+id/friends_appbar_layout"
         layout="@layout/app_bar_layout">
@@ -17,14 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/friends_appbar_layout"
-        android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="Friends List"
+        android:layout_marginTop="15dp"
+        android:text="Your Friend List"
         android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorProfile"
+        android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friend_list"

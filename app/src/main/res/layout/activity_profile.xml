@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
-    android:background="@color/colorProfile">
+    android:background="@color/colorThis">
 
     <include android:id = "@+id/profile_toolbar"
         layout = "@layout/app_bar_layout">
@@ -33,7 +33,7 @@
                 android:layout_height="300dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:src="@drawable/profile" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:text="Profile Name"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/colorProfile"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"/>
@@ -55,11 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/my_profile_full_name"
+                android:layout_margin="10dp"
                 android:gravity="center_horizontal"
                 android:text="Username"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/colorText"
                 android:textSize="18sp" />
 
         </RelativeLayout>

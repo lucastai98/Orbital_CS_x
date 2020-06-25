@@ -3,33 +3,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@color/colorProfile"
+    android:background="@drawable/inputs"
     android:padding="10dp">
     <ImageButton
         android:id="@+id/favourite_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
         android:layout_toRightOf="@id/textLayout"
-        android:src="@drawable/search"
-        android:background="@drawable/inputs"/>
+        android:src="@drawable/greyheart"
+        android:cropToPadding="true"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/favbg"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/all_restaurants_profile_image"
-        android:layout_width="85dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/profile"
-        android:layout_height="85dp"
-        android:background="@drawable/inputs"/>
+        android:background="@drawable/inputs"
+        android:src="@drawable/profile" />
 
     <LinearLayout
         android:id="@+id/textLayout"
-        android:layout_width="221dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@+id/all_restaurants_profile_image"
         android:orientation="vertical">
@@ -41,7 +44,7 @@
             android:gravity="start"
             android:text="name"
             android:textAlignment="textStart"
-            android:textColor="@android:color/background_light"
+            android:textColor="@color/colorProfile"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -52,8 +55,8 @@
             android:gravity="start"
             android:text="location"
             android:textAlignment="textStart"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp" />
+            android:textColor="@color/colorText"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/all_restaurants_type"
@@ -62,8 +65,8 @@
             android:gravity="start"
             android:text="type"
             android:textAlignment="textStart"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp" />
+            android:textColor="@color/colorText"
+            android:textSize="16sp" />
 
 
     </LinearLayout>
