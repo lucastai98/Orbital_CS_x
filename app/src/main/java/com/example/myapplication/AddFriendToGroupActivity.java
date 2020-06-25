@@ -35,6 +35,8 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
 
     private Button confirmButton;
 
+    private String groupID;
+
     private EditText SearchInputText,GroupNameInput;
     private int totalGroups;
 
@@ -47,7 +49,7 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend_to_group);
 
-        mToolbar = (Toolbar) findViewById(R.id.friends_appbar_layout);
+        mToolbar = (Toolbar) findViewById(R.id.add_friends_to_group_appbar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -59,10 +61,11 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
         FriendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(online_user_id);
-        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id);
+        groupID = getIntent().getExtras().get("group_id").toString();
+        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child("Group " + groupID);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        myFriendList = (RecyclerView) findViewById(R.id.friend_list);
+        myFriendList = (RecyclerView) findViewById(R.id.add_friend_to_group_list);
 
         myFriendList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -75,17 +78,17 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 GroupsRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //i dont think you can do this actually
                         //cuz current group might not change while the total groups will change, unless its the creation not the update, maybe can separate the two
-                        DatabaseReference currentGroup = GroupsRef.child("Group "+ (int) dataSnapshot.getChildrenCount());
-                        HashMap groupMap = new HashMap<>();
+                            HashMap groupMap = new HashMap<>();
 
-                        groupMap.put("groupName", GroupNameInput);
-                        currentGroup.updateChildren(groupMap);
-                        currentGroup.child("Members");
+                            groupMap.put("groupName", GroupNameInput);
+                            GroupsRef.updateChildren(groupMap);
+
                     }
 
                     @Override
@@ -138,8 +141,9 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
                                     friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            String visit_user_id = getRef(i).getKey();
 
+                                            String friend_id = getRef(i).getKey();
+                                            GroupsRef.child("Members").child(friend_id).setValue("In group");
 
                                         }
                                     });

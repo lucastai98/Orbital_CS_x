@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -40,11 +41,11 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
-        mToolbar = (Toolbar) findViewById(R.id.friends_appbar_layout);
+        mToolbar = (Toolbar) findViewById(R.id.all_groups_appbar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Friends");
+        getSupportActionBar().setTitle("Groups");
 
         newGroupButton = (ImageButton) findViewById(R.id.new_group_button);
 
@@ -66,7 +67,25 @@ public class GroupsActivity extends AppCompatActivity {
         newGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendUserToAddFriendToGroupActivity();
+                GroupsRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long group_id = dataSnapshot.getChildrenCount()+1;
+
+                        dataSnapshot.child("Group "+group_id);
+                        Intent profileIntent = new Intent(GroupsActivity.this,GroupProfile.class);
+                        profileIntent.putExtra("group_id",group_id);
+                        startActivity(profileIntent);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
@@ -125,7 +144,11 @@ public class GroupsActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
 
-                                            String visit_user_id = getRef(i).getKey();
+                                            String group_id = getRef(i).getKey();
+
+                                            Intent profileIntent = new Intent(GroupsActivity.this,GroupProfile.class);
+                                            profileIntent.putExtra("group_id",group_id);
+                                            startActivity(profileIntent);
 
                                         }
                                     });
@@ -151,6 +174,7 @@ public class GroupsActivity extends AppCompatActivity {
             super(itemView);
             mView = itemView;
         }
+
         public void setProfileimage(Context applicationContext, String profileimage) {
             CircleImageView myImage = (CircleImageView) mView.findViewById(R.id.all_users_profile_image);
             Picasso.get().load(profileimage).placeholder(R.drawable.profile).into(myImage);

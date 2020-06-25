@@ -1,14 +1,139 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupProfile extends AppCompatActivity {
 
+
+    private RecyclerView myFriendList;
+
+    private Toolbar mToolbar;
+
+    private DatabaseReference FriendGroupRef, UsersRef;
+    private FirebaseAuth mAuth;
+    private String online_user_id;
+
+    private String groupID;
+
+    private ImageButton addFriendButton;
+
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_profile);
+        mToolbar = (Toolbar) findViewById(R.id.group_profile_appbar_layout);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Members");
+
+        addFriendButton = (ImageButton) findViewById(R.id.add_friend_to_group_button);
+
+        mAuth = FirebaseAuth.getInstance();
+        online_user_id = mAuth.getCurrentUser().getUid();
+        groupID = getIntent().getExtras().get("group_id").toString();
+        FriendGroupRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child("Group "+groupID);
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        myFriendList = (RecyclerView) findViewById(R.id.friend_list);
+
+        myFriendList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        myFriendList.setLayoutManager(linearLayoutManager);
+
+        DisplayAllFriends();
+
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addFriendIntent = new Intent(GroupProfile.this,AddFriendToGroupActivity.class);
+                addFriendIntent.putExtra("group_id",groupID);
+                startActivity(addFriendIntent);
+            }
+        });
+    }
+    private void SendUserToAddFriendToGroupActivity() {
+
+        Intent addFriendIntent = new Intent(GroupProfile.this,AddFriendToGroupActivity.class);
+        startActivity(addFriendIntent);
+
+    }
+
+
+    private void DisplayAllFriends() {
+
+        FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder>(
+                        Friends.class,
+                        R.layout.all_users_display_layout,
+                        FriendsActivity.FriendsViewHolder.class,
+                        FriendGroupRef
+                ) {
+                    @Override
+                    protected void populateViewHolder(final FriendsActivity.FriendsViewHolder friendsViewHolder, Friends friends, final int i) {
+
+                        final String usersID = getRef(i).getKey();
+
+                        UsersRef.child(usersID).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+
+                                    if (dataSnapshot.child("profileimage").getValue() == null) {
+
+                                        final String profileImage = "drawable://" + R.drawable.profile;
+                                        friendsViewHolder.setProfileimage(getApplicationContext(), profileImage);
+
+                                    } else {
+
+                                        final String profileImage = dataSnapshot.child("profileimage").getValue().toString();
+                                        friendsViewHolder.setProfileimage(getApplicationContext(), profileImage);
+
+                                    }
+
+                                    final String userName = dataSnapshot.child("fullname").getValue().toString();
+                                    final String userUsername = dataSnapshot.child("username").getValue().toString();
+
+                                    friendsViewHolder.setFullname(userName);
+                                    friendsViewHolder.setUsername(userUsername);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                };
+        myFriendList.setAdapter(firebaseRecyclerAdapter);
     }
 }

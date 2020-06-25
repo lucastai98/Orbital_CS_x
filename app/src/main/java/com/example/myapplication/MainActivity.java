@@ -196,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
                 SendUserToFindFriendsActivity();
                 Toast.makeText(this,"Find Friends",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_groups:
+                SendUserToGroupsActivity();
+                Toast.makeText(this,"Groups",Toast.LENGTH_SHORT).show();
+                break;
             case R.id.nav_settings:
                 SendUserToSettingsActivity();
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
@@ -213,6 +217,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void SendUserToRestaurantListActivity() {
         Intent settingsIntent = new Intent(MainActivity.this, RestaurantListActivity.class);
+        startActivity(settingsIntent);
+
+    }
+    private void SendUserToGroupsActivity() {
+        Intent settingsIntent = new Intent(MainActivity.this, GroupsActivity.class);
         startActivity(settingsIntent);
 
     }

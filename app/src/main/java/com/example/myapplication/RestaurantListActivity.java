@@ -40,11 +40,12 @@ public class RestaurantListActivity extends AppCompatActivity {
     private EditText SearchInputText;
 
     private RecyclerView SearchResultList;
+    ImageButton favouriteButton;
 
     private boolean favouriteChecker;
 
     private String currentUserId;
-    private DatabaseReference allRestaurantsDatabaseReference;
+    private DatabaseReference allRestaurantsDatabaseReference,currentUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class RestaurantListActivity extends AppCompatActivity {
 
         allRestaurantsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
 
         SearchResultList = (RecyclerView) findViewById(R.id.search_restaurants_list);
         SearchResultList.setHasFixedSize(true);
@@ -94,12 +96,11 @@ public class RestaurantListActivity extends AppCompatActivity {
         {
 
             @Override
-            protected void populateViewHolder(RestaurantListActivity.FindRestaurantsViewHolder viewHolder, final FindRestaurants find, final int i) {
+            protected void populateViewHolder(final RestaurantListActivity.FindRestaurantsViewHolder viewHolder, final FindRestaurants find, final int i) {
                 viewHolder.setName(find.getName());
                 viewHolder.setLocation(find.getMall()+", "+find.getUnit());
                 viewHolder.setRestaurantPicture(find.getImagelink());
                 viewHolder.setType(find.getCuisineone()+", "+find.getCuisinetwo());
-
                 viewHolder.setFavouriteButtonStatus(currentUserId, find);
 
                 viewHolder.favouriteButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +108,8 @@ public class RestaurantListActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         favouriteChecker = true;
+
+                        currentUserRef.child("favourite restaurants").child(Long.toString(find.getId()));
 
                         final DatabaseReference RestaurantRef = allRestaurantsDatabaseReference.child("Restaurant "+find.id).child("favourites");
 
@@ -123,6 +126,8 @@ public class RestaurantListActivity extends AppCompatActivity {
 
                                         RestaurantRef.child(currentUserId).setValue(true);
                                         favouriteChecker = false;
+
+
 
                                     }
                                 }
@@ -149,9 +154,15 @@ public class RestaurantListActivity extends AppCompatActivity {
 
         ImageButton favouriteButton;
 
+        DatabaseReference RestaurantRef;
+
+        String currentUserId;
+
         public FindRestaurantsViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+            RestaurantRef = FirebaseDatabase.getInstance().getReference().child("Restaurants");
+            currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             favouriteButton = (ImageButton) mView.findViewById(R.id.favourite_button);
         }
@@ -175,16 +186,19 @@ public class RestaurantListActivity extends AppCompatActivity {
         }
 
 
-        public void setFavouriteButtonStatus(final String currentUserId, FindRestaurants currentRestaurant) {
-
-            DatabaseReference RestaurantRef = FirebaseDatabase.getInstance().getReference().child("Restaurants").child("Restaurant "+currentRestaurant.id).child("favourites");
+        public void setFavouriteButtonStatus(final String currentUserId, final FindRestaurants currentRestaurant) {
 
             RestaurantRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child("Restaurant "+currentRestaurant.id).hasChild("favourites")){
 
-                    if(dataSnapshot.hasChild(currentUserId)){
-                        favouriteButton.setImageResource(R.drawable.redheart);
+                        if(dataSnapshot.child("Restaurant "+currentRestaurant.id).child("favourites").hasChild(currentUserId)){
+                            favouriteButton.setImageResource(R.drawable.redheart);
+                        }else{
+                            favouriteButton.setImageResource(R.drawable.greyheart);
+                        }
+
                     }else{
                         favouriteButton.setImageResource(R.drawable.greyheart);
                     }

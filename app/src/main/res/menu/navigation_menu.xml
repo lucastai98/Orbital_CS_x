@@ -23,7 +23,7 @@
         android:title="Find Friends"/>
 <!--        android:icon="@drawable/find_people"/>-->
     <item
-        android:id="@+id/groups"
+        android:id="@+id/nav_groups"
         android:title="Groups" />
 
     <item
