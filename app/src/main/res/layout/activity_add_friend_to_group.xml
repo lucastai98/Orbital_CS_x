@@ -11,6 +11,12 @@
         layout="@layout/app_bar_layout">
 
     </include>
+    <ImageButton
+        android:id="@+id/add_friend_back_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/whitearrow"/>
 
     <RelativeLayout
         android:id="@+id/myLayout_for_add_friend_to_group"

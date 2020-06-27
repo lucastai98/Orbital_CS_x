@@ -12,9 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,9 +44,13 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
     private EditText SearchInputText,GroupNameInput;
     private int totalGroups;
 
-    private DatabaseReference FriendsRef, UsersRef,GroupsRef;
+    private DatabaseReference FriendsRef, UsersRef,GroupsRef,GroupsRefList;
     private FirebaseAuth mAuth;
     private String online_user_id;
+    private ImageButton backButton;
+
+    private boolean inGroupChecker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +65,28 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
 
         confirmButton = (Button) findViewById(R.id.confirm_group_button);
         GroupNameInput = (EditText) findViewById(R.id.edit_group_name);
+        backButton = (ImageButton) findViewById(R.id.add_friend_back_button);
+        backButton.bringToFront();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(AddFriendToGroupActivity.this,GroupsActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
         FriendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(online_user_id);
         groupID = getIntent().getExtras().get("group_id").toString();
-        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child("Group " + groupID);
+        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child(groupID);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        GroupsRefList = FirebaseDatabase.getInstance().getReference().child("GroupList").child(online_user_id).child(groupID);
+
+        getSupportActionBar().setTitle("Friends");
 
         myFriendList = (RecyclerView) findViewById(R.id.add_friend_to_group_list);
 
@@ -73,49 +96,66 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         myFriendList.setLayoutManager(linearLayoutManager);
 
-        DisplayAllFriends();
+
+        GroupsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("groupName")) {
+                    GroupNameInput.setText(dataSnapshot.child("groupName").getValue().toString());
+                }else{
+                    GroupNameInput.setText("");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                GroupsRef.addValueEventListener(new ValueEventListener() {
+                HashMap groupMap = new HashMap<>();
+                String groupName = GroupNameInput.getText().toString();
+                groupMap.put("groupName", groupName);
+                GroupsRefList.updateChildren(groupMap);
+                GroupsRef.updateChildren(groupMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //i dont think you can do this actually
-                        //cuz current group might not change while the total groups will change, unless its the creation not the update, maybe can separate the two
-                            HashMap groupMap = new HashMap<>();
-
-                            groupMap.put("groupName", GroupNameInput);
-                            GroupsRef.updateChildren(groupMap);
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                    public void onComplete(@NonNull Task task) {
+                        Intent profileIntent = new Intent(AddFriendToGroupActivity.this,GroupProfile.class);
+                        profileIntent.putExtra("group_id",groupID);
+                        profileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(profileIntent);
+                        finish();
                     }
                 });
+
             }
         });
+        DisplayAllFriends();
+
 
     }
 
     private void DisplayAllFriends() {
 
-        FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder>(
+        FirebaseRecyclerAdapter<Friends, AddFriendToGroupActivity.FriendsViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Friends, AddFriendToGroupActivity.FriendsViewHolder>(
                         Friends.class,
                         R.layout.all_users_display_layout,
-                        FriendsActivity.FriendsViewHolder.class,
+                        AddFriendToGroupActivity.FriendsViewHolder.class,
                         FriendsRef
                 ) {
                     @Override
-                    protected void populateViewHolder(final FriendsActivity.FriendsViewHolder friendsViewHolder, Friends friends, final int i) {
+                    protected void populateViewHolder(final AddFriendToGroupActivity.FriendsViewHolder friendsViewHolder, Friends friends, final int i) {
 
-                        final String usersID = getRef(i).getKey();
+                        final String friend_id = getRef(i).getKey();
+                        friendsViewHolder.setFriendStatus(online_user_id,friend_id,groupID);
 
-                        UsersRef.child(usersID).addValueEventListener(new ValueEventListener() {
+
+                        UsersRef.child(friend_id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
@@ -138,16 +178,6 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
                                     friendsViewHolder.setFullname(userName);
                                     friendsViewHolder.setUsername(userUsername);
 
-                                    friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            String friend_id = getRef(i).getKey();
-                                            GroupsRef.child("Members").child(friend_id).setValue("In group");
-
-                                        }
-                                    });
-
 
                                 }
                             }
@@ -157,6 +187,38 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
 
                             }
                         });
+                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                inGroupChecker = true;
+                                GroupsRef.child("members").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if(inGroupChecker) {
+                                            if (dataSnapshot.hasChild(friend_id)) {
+
+                                                GroupsRef.child("members").child(friend_id).removeValue();
+                                                inGroupChecker = false;
+
+                                            } else {
+
+                                                GroupsRef.child("members").child(friend_id).setValue("In group");
+                                                inGroupChecker = false;
+
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+                        });
+
 
                     }
                 };
@@ -166,10 +228,13 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
     public static class FriendsViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
+        DatabaseReference GroupsRef;
 
         public FriendsViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+
         }
         public void setProfileimage(Context applicationContext, String profileimage) {
             CircleImageView myImage = (CircleImageView) mView.findViewById(R.id.all_users_profile_image);
@@ -183,6 +248,29 @@ public class AddFriendToGroupActivity extends AppCompatActivity {
             TextView myUsername = (TextView) mView.findViewById(R.id.all_users_username);
             myUsername.setText("@"+username);
         }
+        public void setFriendStatus(final String currentUserId, final String currentFriend, final String groupID) {
+            final ImageView inGroupChecker = (ImageView) mView.findViewById(R.id.in_group_checker);
+
+            GroupsRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if(dataSnapshot.child(groupID).child("members").hasChild(currentFriend)){
+                            inGroupChecker.setImageResource(R.drawable.redcross);
+                        }else{
+                            inGroupChecker.setImageResource(R.drawable.inputs);
+                        }
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
     }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -31,13 +32,13 @@ public class GroupProfile extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
-    private DatabaseReference FriendGroupRef, UsersRef;
+    private DatabaseReference FriendGroupRef, UsersRef,FriendGroupListRef,GroupsRefList;
     private FirebaseAuth mAuth;
     private String online_user_id;
 
     private String groupID;
 
-    private ImageButton addFriendButton;
+    private ImageButton addFriendButton,deleteGroupButton,backButton;
 
 
     @Override
@@ -45,19 +46,65 @@ public class GroupProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_profile);
-        mToolbar = (Toolbar) findViewById(R.id.group_profile_appbar_layout);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Members");
-
-        addFriendButton = (ImageButton) findViewById(R.id.add_friend_to_group_button);
 
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
         groupID = getIntent().getExtras().get("group_id").toString();
-        FriendGroupRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child("Group "+groupID);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        FriendGroupRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child(groupID);
+        GroupsRefList = FirebaseDatabase.getInstance().getReference().child("GroupList").child(online_user_id).child(groupID);
+
+//        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id);
+        FriendGroupListRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child(groupID).child("members");
+
+        mToolbar = (Toolbar) findViewById(R.id.group_profile_appbar_layout);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        FriendGroupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("groupName").exists()) {
+                    getSupportActionBar().setTitle(dataSnapshot.child("groupName").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        addFriendButton = (ImageButton) findViewById(R.id.add_friend_to_group_button);
+        deleteGroupButton = (ImageButton) findViewById(R.id.delete_group_button);
+        backButton = (ImageButton) findViewById(R.id.group_profile_back_button);
+        backButton.bringToFront();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(GroupProfile.this,GroupsActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
+
+        deleteGroupButton.bringToFront();
+
+        deleteGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FriendGroupRef.removeValue();
+                GroupsRefList.removeValue();
+
+                Intent mainIntent = new Intent(GroupProfile.this,GroupsActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
 
         myFriendList = (RecyclerView) findViewById(R.id.friend_list);
 
@@ -75,6 +122,7 @@ public class GroupProfile extends AppCompatActivity {
                 Intent addFriendIntent = new Intent(GroupProfile.this,AddFriendToGroupActivity.class);
                 addFriendIntent.putExtra("group_id",groupID);
                 startActivity(addFriendIntent);
+                finish();
             }
         });
     }
@@ -88,15 +136,15 @@ public class GroupProfile extends AppCompatActivity {
 
     private void DisplayAllFriends() {
 
-        FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Friends, FriendsActivity.FriendsViewHolder>(
-                        Friends.class,
+        FirebaseRecyclerAdapter<String, FriendsActivity.FriendsViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<String, FriendsActivity.FriendsViewHolder>(
+                        String.class,
                         R.layout.all_users_display_layout,
                         FriendsActivity.FriendsViewHolder.class,
-                        FriendGroupRef
+                        FriendGroupListRef
                 ) {
                     @Override
-                    protected void populateViewHolder(final FriendsActivity.FriendsViewHolder friendsViewHolder, Friends friends, final int i) {
+                    protected void populateViewHolder(final FriendsActivity.FriendsViewHolder friendsViewHolder, String friends, final int i) {
 
                         final String usersID = getRef(i).getKey();
 

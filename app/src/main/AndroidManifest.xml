@@ -14,9 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddFriendToGroupActivity"></activity>
+        <activity android:name=".CreateNewGroupActivity"></activity>
+        <activity android:name=".AddFriendToGroupActivity" />
         <activity android:name=".GroupProfile" />
-        <activity android:name=".GroupsActivity" />
+        <activity
+            android:name=".GroupsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FriendsActivity"
             android:parentActivityName=".MainActivity" />

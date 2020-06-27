@@ -11,7 +11,17 @@
         android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
         android:src="@drawable/profile" />
+
+    <ImageView
+        android:id="@+id/in_group_checker"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
     <LinearLayout
+        android:id="@+id/all_users_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -37,6 +47,7 @@
             android:textColor="@color/colorText"
             android:textSize="16sp"
             android:gravity="start" />
+
     </LinearLayout>
 
 </RelativeLayout>

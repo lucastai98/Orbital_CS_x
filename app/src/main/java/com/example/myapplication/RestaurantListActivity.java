@@ -112,22 +112,48 @@ public class RestaurantListActivity extends AppCompatActivity {
                         currentUserRef.child("favourite restaurants").child(Long.toString(find.getId()));
 
                         final DatabaseReference RestaurantRef = allRestaurantsDatabaseReference.child("Restaurant "+find.id).child("favourites");
+                        final DatabaseReference RestaurantListRef = allRestaurantsDatabaseReference.child("Restaurant "+find.id);
 
-                        RestaurantRef.addValueEventListener(new ValueEventListener() {
+                        RestaurantListRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(favouriteChecker) {
-                                    if (dataSnapshot.hasChild(currentUserId)) {
+                                    if (dataSnapshot.child("favourites").hasChild(currentUserId)) {
 
                                         RestaurantRef.child(currentUserId).removeValue();
                                         favouriteChecker = false;
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id)).removeValue();
 
                                     } else {
 
                                         RestaurantRef.child(currentUserId).setValue(true);
                                         favouriteChecker = false;
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("asianorwestern").setValue(dataSnapshot.child("asianorwestern").getValue());
 
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("cuisineone").setValue(dataSnapshot.child("cuisineone").getValue());
 
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("cuisinethree").setValue(dataSnapshot.child("cuisinethree").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("cuisinetwo").setValue(dataSnapshot.child("cuisinetwo").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("id").setValue(dataSnapshot.child("id").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("imagelink").setValue(dataSnapshot.child("imagelink").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("mall").setValue(dataSnapshot.child("mall").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("name").setValue(dataSnapshot.child("name").getValue());
+
+                                        currentUserRef.child("favourite restaurants").child(String.valueOf("Restaurant "+find.id))
+                                                .child("unit").setValue(dataSnapshot.child("unit").getValue());
 
                                     }
                                 }
