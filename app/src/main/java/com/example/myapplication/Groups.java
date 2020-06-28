@@ -1,23 +1,37 @@
 package com.example.myapplication;
 
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Groups {
 
-    public String relationship;
+    public String groupName,groupImage;
 
-    public Groups(){
 
+    public Groups() {
     }
 
-    public Groups(String relationship) {
-        this.relationship = relationship;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public String getRelationship() {
-        return relationship;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public void setRelationship(String relationship) {
-        this.relationship = relationship;
+    public String getGroupImage() {
+        return groupImage;
     }
 
+    public void setGroupImage(String groupImage) {
+        this.groupImage = groupImage;
+    }
+
+
+    public Groups(String groupName, String groupImage) {
+        this.groupName = groupName;
+        this.groupImage = groupImage;
+    }
 }

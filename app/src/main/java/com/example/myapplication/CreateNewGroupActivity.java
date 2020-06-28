@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -12,8 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Gallery;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,39 +34,44 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SetupActivity extends AppCompatActivity {
-
+public class CreateNewGroupActivity extends AppCompatActivity {
     private EditText UserName, FullName;
     private Button SaveInformationButton;
     private CircleImageView ProfileImage;
 
     private ProgressDialog loadingBar;
 
+    private String groupID;
+
+    private ImageButton backButton;
+
     private FirebaseAuth mAuth;
-    private DatabaseReference UsersRef;
-    private StorageReference UserProfileImageRef;
+    private DatabaseReference UsersRef,GroupsRef,GroupsRefList;
+    private StorageReference GroupProfileImageRef;
 
     String currentUserID;
     final static int Gallery_Pick = 1;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_first);
-
+        setContentView(R.layout.activity_create_new_group);
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
-        UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        GroupProfileImageRef = FirebaseStorage.getInstance().getReference().child("Group Images");
 
         loadingBar = new ProgressDialog(this);
+        groupID = getIntent().getExtras().get("group_id").toString();
 
-        UserName = (EditText) findViewById(R.id.setup_username);
-        FullName = (EditText) findViewById(R.id.setup_fullname);
-        SaveInformationButton = (Button) findViewById(R.id.setup_information_button);
-        ProfileImage = (CircleImageView) findViewById( R.id.setup_profile_image);
+        GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentUserID).child(groupID);
+        GroupsRefList = FirebaseDatabase.getInstance().getReference().child("GroupList").child(currentUserID).child(groupID);
+        GroupsRef.child("members").child(currentUserID).setValue("In group");
+
+
+        UserName = (EditText) findViewById(R.id.new_group_name);
+        SaveInformationButton = (Button) findViewById(R.id.new_group_save_info_button);
+//        ProfileImage = (CircleImageView) findViewById( R.id.new_group_profile_image);
 
         SaveInformationButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -77,36 +80,53 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        ProfileImage.setOnClickListener(new View.OnClickListener(){
+//        ProfileImage.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view){
+//                Intent galleryIntent = new Intent();
+//                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//                galleryIntent.setType("image/*");
+//                startActivityForResult(galleryIntent, Gallery_Pick);
+//            }
+//        });
+
+//        UsersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()){
+//
+//                    if(dataSnapshot.hasChild("profileimage")) {
+//                        String image = dataSnapshot.child("profileimage").getValue().toString();
+//
+//                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
+//                    }else{
+//                        Toast.makeText(CreateNewGroupActivity.this, "Please select a profile image",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        backButton = (ImageButton) findViewById(R.id.new_group_back_button);
+        backButton.bringToFront();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                Intent galleryIntent = new Intent();
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, Gallery_Pick);
+            public void onClick(View v) {
+
+                GroupsRef.removeValue();
+
+                Intent mainIntent = new Intent(CreateNewGroupActivity.this,GroupsActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
             }
         });
 
-        UsersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-
-                    if(dataSnapshot.hasChild("profileimage")) {
-                        String image = dataSnapshot.child("profileimage").getValue().toString();
-
-                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
-                    }else{
-                        Toast.makeText(SetupActivity.this, "Please select a profile image",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -133,14 +153,14 @@ public class SetupActivity extends AppCompatActivity {
 
             if(resultCode == RESULT_OK)
             {
-                loadingBar.setTitle("Profile Image");
-                loadingBar.setMessage("Please wait, while we updating your profile image...");
+                loadingBar.setTitle("Group Image");
+                loadingBar.setMessage("Please wait, while we update your group image...");
                 loadingBar.show();
                 loadingBar.setCanceledOnTouchOutside(true);
 
                 Uri resultUri = result.getUri();
 
-                final StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
+                final StorageReference filePath = GroupProfileImageRef.child(currentUserID+"space"+groupID + ".jpg");
 
                 filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -149,7 +169,7 @@ public class SetupActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 final String downloadUrl = uri.toString();
-                                UsersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                GroupsRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
@@ -159,12 +179,12 @@ public class SetupActivity extends AppCompatActivity {
                                             // In other words, you don't have to run this intent again.
                                             // After the pic posts, you are still on setupActivity.  Just go right to the Toast)
 
-                                            Toast.makeText(SetupActivity.this, "Image Stored", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(CreateNewGroupActivity.this, "Image Stored", Toast.LENGTH_SHORT).show();
                                             loadingBar.dismiss();
                                         }
                                         else {
                                             String message = task.getException().getMessage();
-                                            Toast.makeText(SetupActivity.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(CreateNewGroupActivity.this, "Error:" + message, Toast.LENGTH_SHORT).show();
                                             loadingBar.dismiss();
                                         }
                                     }
@@ -186,35 +206,30 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void SaveAccountSetupInformation() {
-        String username = UserName.getText().toString();
-        String fullname = FullName.getText().toString();
+        String groupname = UserName.getText().toString();
 
-        if(TextUtils.isEmpty(username)) {
-            Toast.makeText(this, "Please fill in your username...", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(groupname)) {
+            Toast.makeText(this, "Please fill in your group name...", Toast.LENGTH_SHORT).show();
 
-        }else if(TextUtils.isEmpty(fullname)){
-            Toast.makeText(this,"Please fill in your full name...",Toast.LENGTH_SHORT).show();
         }else{
             loadingBar.setTitle("Saving Information");
-            loadingBar.setMessage("Please wait while we are creating your new account");
+            loadingBar.setMessage("Please wait while we are creating your new group");
             loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
 
             HashMap userMap = new HashMap();
-            userMap.put("username", username);
-            userMap.put("fullname", fullname);
-            userMap.put("favourite restaurants", "");
-
-            UsersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            userMap.put("groupName", groupname);
+            GroupsRefList.updateChildren(userMap);
+            GroupsRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if(task.isSuccessful()){
-                        SendUserToMainActivity();
-                        Toast.makeText(SetupActivity.this,"Your Account is created successfully.",Toast.LENGTH_SHORT).show();
+                        SendUserToAddFriendToGroupActivity();
+                        Toast.makeText(CreateNewGroupActivity.this,"Your Group is created successfully.",Toast.LENGTH_SHORT).show();
                         loadingBar.dismiss();
                     }else{
                         String message = task.getException().getMessage();
-                        Toast.makeText(SetupActivity.this, "Error occurred: "+message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateNewGroupActivity.this, "Error occurred: "+message, Toast.LENGTH_SHORT).show();
                         loadingBar.dismiss();
                     }
                 }
@@ -224,9 +239,10 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-    private void SendUserToMainActivity(){
-        Intent mainIntent = new Intent(SetupActivity.this,MainActivity.class);
+    private void SendUserToAddFriendToGroupActivity(){
+        Intent mainIntent = new Intent(CreateNewGroupActivity.this,AddFriendToGroupActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mainIntent.putExtra("group_id",groupID);
         startActivity(mainIntent);
         finish();
     }
