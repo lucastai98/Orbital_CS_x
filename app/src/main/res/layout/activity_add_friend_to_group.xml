@@ -5,18 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddFriendToGroupActivity"
-    android:background="@color/colorProfile">
+    android:background="@color/colorThis">
+
     <include
         android:id="@+id/add_friends_to_group_appbar_layout"
         layout="@layout/app_bar_layout">
-
     </include>
+
     <ImageButton
         android:id="@+id/add_friend_back_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:cropToPadding="true"
+        android:padding="18dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/whitearrow"/>
+        android:src="@drawable/whitearrow"
+        android:background="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/confirm_group_button"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/inputs"
+        android:textColor="@color/colorProfile"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/myLayout_for_add_friend_to_group"
@@ -25,57 +44,85 @@
         android:layout_marginTop="15dp"
         android:layout_below="@+id/add_friends_to_group_appbar_layout">
 
+        <TextView
+            android:id="@+id/rename_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Rename this group!"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorProfile"
+            android:textSize="14sp" />
+
         <EditText
+            android:layout_below="@+id/rename_group"
             android:id="@+id/edit_group_name"
-            android:layout_width="280dp"
-            android:layout_height="45dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="21dp"
+            android:layout_width="260dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
             android:background="@drawable/inputs"
             android:ems="10"
-            android:hint="Group name"
+            android:hint="Group Name"
             android:inputType="textMultiLine"
             android:padding="10dp"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/add_member"
+            android:layout_below="@+id/edit_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Add a friend to the group!"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/colorProfile"
-            android:textColorHint="@color/colorProfile"
-            android:layout_alignParentLeft="true" />
+            android:textSize="14sp" />
+
 
         <EditText
             android:id="@+id/friend_group_search_box_input"
-            android:layout_width="280dp"
-            android:layout_height="45dp"
-            android:layout_below="@+id/edit_group_name"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="21dp"
+            android:layout_width="260dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/add_member"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/inputs"
             android:ems="10"
-            android:hint="Search..."
+            android:hint="Search"
             android:inputType="textMultiLine"
             android:padding="10dp"
-            android:textColor="@color/colorProfile"
-            android:textColorHint="@color/colorProfile"
-            android:layout_alignParentLeft="true" />
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"/>
+
         <ImageButton
             android:id="@+id/search_friends_button"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/add_member"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/edit_group_name"
-            android:layout_toEndOf="@+id/friend_group_search_box_input"
-            android:layout_toRightOf="@+id/friend_group_search_box_input"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="51dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/inputs"
+            android:cropToPadding="true"
+            android:padding="8dp"
+            android:scaleType="centerInside"
             android:src="@drawable/search"
-            android:background="@drawable/inputs"/>
-        <Button
-            android:id="@+id/confirm_group_button"
-            android:text="Confirm"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/friend_group_search_box_input"
             android:layout_toRightOf="@+id/friend_group_search_box_input"
-            android:background="@drawable/inputs"/>
+            />
+
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -84,5 +131,5 @@
         android:layout_height="match_parent"
         android:layout_below="@id/myLayout_for_add_friend_to_group"
         android:layout_alignParentLeft="true"
-        android:layout_margin="15dp"/>
+        android:layout_margin="5dp"/>
 </RelativeLayout>

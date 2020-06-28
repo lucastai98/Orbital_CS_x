@@ -25,7 +25,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
-            android:text="Your Favourites"
+            android:text="Your Favourite Restaurants!"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorProfile"
             android:layout_below="@+id/main_page_toolbar"
@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-
             android:layout_below="@id/favourites_text"
             android:visibility="visible"/>
 

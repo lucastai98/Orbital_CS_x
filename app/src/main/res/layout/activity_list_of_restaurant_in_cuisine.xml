@@ -14,16 +14,16 @@ android:background="@color/colorThis">
 
 <TextView
     android:id="@+id/restaurants_in_cuisine_text"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/cuisine_restaurants_appbar"
     android:gravity="center_horizontal"
     android:layout_marginTop="15dp"
-    android:text="Restaurants"
-    android:textAlignment="center"
+    android:layout_marginLeft="30dp"
+    android:text="Restaurants!"
     android:layout_centerHorizontal="true"
     android:textColor="@color/colorProfile"
-    android:textSize="25sp" />
+    android:textSize="14sp" />
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/cuisine_restaurant_list"

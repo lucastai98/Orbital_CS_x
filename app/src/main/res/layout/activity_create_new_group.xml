@@ -8,42 +8,36 @@
     tools:context=".SetupActivity">
     <ImageButton
         android:id="@+id/new_group_back_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:cropToPadding="true"
+        android:padding="18dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/whitearrow"/>
+        android:src="@drawable/redarrow"
+        android:background="@color/colorThis"/>
 
     <TextView
         android:id="@+id/simpleTextID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Create new group"
+        android:layout_marginTop="200dp"
+        android:text="Create a new group!"
         android:textColor="@color/colorProfile"
         android:textSize="14sp" />
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/new_group_profile_image"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="97dp"
-        android:src="@drawable/profile" />
 
     <EditText
         android:id="@+id/new_group_name"
         android:layout_width="350dp"
         android:layout_height="52dp"
-        android:layout_below="@+id/new_group_profile_image"
+        android:layout_below="@+id/simpleTextID"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/inputs"
         android:ems="10"
         android:gravity="start|top"
@@ -65,6 +59,16 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="22sp"/>
+
+
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:id="@+id/new_group_profile_image"-->
+<!--        android:layout_width="175dp"-->
+<!--        android:layout_height="175dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="97dp"-->
+<!--        android:src="@drawable/profile" />-->
 
 
 </RelativeLayout>

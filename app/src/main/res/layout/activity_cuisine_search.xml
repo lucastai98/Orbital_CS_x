@@ -32,6 +32,8 @@
             android:textSize="14sp" />
 
     </RelativeLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Cuisine_list"
         android:layout_width="match_parent"

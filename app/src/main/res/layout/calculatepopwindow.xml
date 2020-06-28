@@ -9,11 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Best restaurant for you!"
+        android:text="The best restaurant for your group is"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/cardview_light_background"
-        android:textSize="35sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -23,11 +23,11 @@
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="No restaurants found!"
+        android:text="sadly, not able to be found! (Do you have any restaurants favourited?)"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/cardview_light_background"
-        android:textSize="45sp"
+        android:textSize="15sp"
         android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
