@@ -39,7 +39,7 @@ public class Pop extends Activity {
     private RecyclerView ourBestRestaurant;
     private TextView noRestaurantsFound,bestRestaurantForYou;
 
-    private DatabaseReference FriendsRef, UsersRef,GroupMembersRef, GroupRef, RestaurantsRef, bestRestaurantRef, test;
+    private DatabaseReference FriendsRef, UsersRef,GroupMembersRef, GroupRef, RestaurantsRef, bestRestaurantRef;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -57,8 +57,6 @@ public class Pop extends Activity {
         int w = (int) ( width*0.8);
 
         getWindow().setLayout( w,h);
-
-        test = FirebaseDatabase.getInstance().getReference().child("test");
 
         groupID = getIntent().getExtras().get("group_id").toString();
 
@@ -140,8 +138,6 @@ public class Pop extends Activity {
                                 bestRestaurantMap.put("unit",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("unit").getValue() );
                                 bestRestaurantMap.put("mall",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("mall").getValue() );
                                 bestRestaurantMap.put("name",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("name").getValue() );
-
-                                test.setValue(("Restaurant " +favouriteRestaurant));
 
                                 GroupRef.child("best restaurants").child("Restaurant " +favouriteRestaurant).updateChildren(bestRestaurantMap);
 

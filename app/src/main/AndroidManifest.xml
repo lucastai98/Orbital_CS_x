@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateNewGroupActivity"></activity>
+        <activity android:name=".ListOfRestaurantInCuisine"
+            android:parentActivityName=".CuisinesListActivity" />
+        <activity android:name=".CreateNewGroupActivity" />
         <activity android:name=".AddFriendToGroupActivity" />
         <activity android:name=".GroupProfile" />
         <activity
@@ -26,6 +28,9 @@
         <activity
             android:name=".PersonProfileActivity"
             android:parentActivityName=".FindFriendsActivity" />
+        <activity
+            android:name=".CuisinesListActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FindFriendsActivity"
             android:parentActivityName=".MainActivity" />
@@ -47,7 +52,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".Pop"
+        <activity
+            android:name=".Pop"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

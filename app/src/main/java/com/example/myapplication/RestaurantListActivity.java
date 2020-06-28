@@ -237,6 +237,12 @@ public class RestaurantListActivity extends AppCompatActivity {
                 }
             });
         }
+        public void setFavouriteButtonInvisible(){
+            ImageButton favouriteButton = (ImageButton) mView.findViewById(R.id.favourite_button);
+            favouriteButton.setVisibility(View.GONE);
+
+        }
+
     }
 
 }
