@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile).into(NavProfileImage);
                     }else{
-                        Toast.makeText(MainActivity.this,"Profile name do not exist",Toast.LENGTH_SHORT).show();
+
                     }
 
                 }
@@ -205,9 +205,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_profile:
                 SendUserToProfileActivity();
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_home:
-                Toast.makeText(this,"Home",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_friends:
                 SendUserToFriendsActivity();

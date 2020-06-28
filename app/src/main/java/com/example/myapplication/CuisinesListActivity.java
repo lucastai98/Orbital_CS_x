@@ -39,6 +39,7 @@ public class CuisinesListActivity extends AppCompatActivity {
     private DatabaseReference CuisinesRef;
 
     private String cuisineName;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +57,20 @@ public class CuisinesListActivity extends AppCompatActivity {
         CuisineList = (RecyclerView) findViewById(R.id.Cuisine_list);
         CuisineList.setHasFixedSize(true);
         CuisineList.setLayoutManager(new LinearLayoutManager(this));
+        backButton = (ImageButton) findViewById(R.id.cuisine_list_back_button);
+        backButton.bringToFront();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(CuisinesListActivity.this,MainActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
 
 
-//        SearchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String searchBoxInput = SearchInputText.getText().toString();
-//
-//                SearchCuisines(searchBoxInput);
-//
-//            }
-//        });
         SearchCuisines();
 //
     }

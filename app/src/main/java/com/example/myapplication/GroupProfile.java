@@ -42,7 +42,6 @@ public class GroupProfile extends AppCompatActivity {
     private ImageButton addFriendButton,deleteGroupButton,backButton;
     private Button calculateButton;
 
-
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
