@@ -8,9 +8,6 @@
         android:itemBackground="#fff6ef" />
 <!--        android:icon="@drawable/profile_icon"/>-->
 
-    <item
-        android:id="@+id/nav_home"
-        android:title="Home"/>
 <!--        android:icon="@drawable/home"/>-->
 
     <item
