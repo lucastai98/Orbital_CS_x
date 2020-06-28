@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -39,7 +40,7 @@ public class Pop extends Activity {
     private RecyclerView ourBestRestaurant;
     private TextView noRestaurantsFound,bestRestaurantForYou;
 
-    private DatabaseReference FriendsRef, UsersRef,GroupMembersRef, GroupRef, RestaurantsRef, bestRestaurantRef;
+    private DatabaseReference FriendsRef, UsersRef,GroupMembersRef, GroupRef, RestaurantsRef, bestRestaurantRef,test;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class Pop extends Activity {
 
         RestaurantsRef = FirebaseDatabase.getInstance().getReference().child("Restaurants");
         GroupRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentUserID).child(groupID);
+        test = FirebaseDatabase.getInstance().getReference().child("test");
         GroupMembersRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentUserID).child(groupID).child("members");
         bestRestaurantRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentUserID).child(groupID).child("best restaurants");
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -111,6 +113,7 @@ public class Pop extends Activity {
         ourBestRestaurant.setAdapter(firebaseRecyclerAdapter);
     }
 
+
     private void CalculateBestRestaurant() {
 
 
@@ -122,52 +125,10 @@ public class Pop extends Activity {
 
                         CollateAllMembers((Map<String, Object>) xdataSnapshot.getValue());
 
-
                         RestaurantsRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                HashMap bestRestaurantMap = new HashMap();
-
-                                bestRestaurantMap.put("asianorwestern",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("asianorwestern").getValue() );
-                                bestRestaurantMap.put("cuisineone",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisineone").getValue() );
-                                bestRestaurantMap.put("cuisinetwo",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisinetwo").getValue() );
-                                bestRestaurantMap.put("cuisinethree",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisinethree").getValue() );
-                                bestRestaurantMap.put("id",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("id").getValue() );
-                                bestRestaurantMap.put("imagelink",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("imagelink").getValue() );
-                                bestRestaurantMap.put("unit",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("unit").getValue() );
-                                bestRestaurantMap.put("mall",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("mall").getValue() );
-                                bestRestaurantMap.put("name",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("name").getValue() );
-
-                                GroupRef.child("best restaurants").child("Restaurant " +favouriteRestaurant).updateChildren(bestRestaurantMap);
-
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("asianorwestern").setValue(dataSnapshot.child("asianorwestern").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("cuisineone").setValue(dataSnapshot.child("cuisineone").getValue());
-
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("cuisinetwo").setValue(dataSnapshot.child("cuisinetwo").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("cuisinethree").setValue(dataSnapshot.child("cuisinethree").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("id").setValue(dataSnapshot.child("id").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("imagelink").setValue(dataSnapshot.child("imagelink").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("mall").setValue(dataSnapshot.child("mall").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("name").setValue(dataSnapshot.child("name").getValue());
-//
-//                                bestRestaurantRef.child("Restaurant " + favouriteRestaurant)
-//                                        .child("unit").setValue(dataSnapshot.child("unit").getValue());
-                                noRestaurantsFound.setVisibility(View.GONE);
 
                                 if(favouriteRestaurant.equals("No restaurants found")){
 
@@ -175,7 +136,24 @@ public class Pop extends Activity {
                                     bestRestaurantForYou.setVisibility(View.GONE);
 
                                 }else {
+                                    bestRestaurantRef.removeValue();
                                     bestRestaurantForYou.setVisibility(View.VISIBLE);
+                                    HashMap bestRestaurantMap = new HashMap();
+
+                                    bestRestaurantMap.put("asianorwestern",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("asianorwestern").getValue() );
+                                    bestRestaurantMap.put("cuisineone",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisineone").getValue() );
+                                    bestRestaurantMap.put("cuisinetwo",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisinetwo").getValue() );
+                                    bestRestaurantMap.put("cuisinethree",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("cuisinethree").getValue() );
+                                    bestRestaurantMap.put("id",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("id").getValue() );
+                                    bestRestaurantMap.put("imagelink",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("imagelink").getValue() );
+                                    bestRestaurantMap.put("unit",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("unit").getValue() );
+                                    bestRestaurantMap.put("mall",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("mall").getValue() );
+                                    bestRestaurantMap.put("name",dataSnapshot.child("Restaurant " +favouriteRestaurant).child("name").getValue() );
+
+                                    GroupRef.child("best restaurants").child("Restaurant " +favouriteRestaurant).updateChildren(bestRestaurantMap);
+
+                                    noRestaurantsFound.setVisibility(View.GONE);
+
                                     DisplayFavouriteRestaurant();
                                 }
 
@@ -226,20 +204,20 @@ public class Pop extends Activity {
                             }
                         }
 
-                        Map.Entry<String, Integer> maxEntry = null;
-
-                        for (Map.Entry<String, Integer> entry : restaurantFavouriteCounter.entrySet()) {
-                            if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
-                                maxEntry = entry;
-                            }
-                        }
-                        if(maxEntry!=null) {
-                            favouriteRestaurant = maxEntry.getKey();
-                        }else{
-                            favouriteRestaurant = "No restaurants found";
-                        }
-
                     }
+                    Map.Entry<String, Integer> maxEntry = null;
+
+                    for (Map.Entry<String, Integer> entry : restaurantFavouriteCounter.entrySet()) {
+                        if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
+                            maxEntry = entry;
+                        }
+                    }
+                    if(maxEntry!=null) {
+                        favouriteRestaurant = maxEntry.getKey();
+                    }else{
+                        favouriteRestaurant = "No restaurants found";
+                    }
+
 
                 }
 
