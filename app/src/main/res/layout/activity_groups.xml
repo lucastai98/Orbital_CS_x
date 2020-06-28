@@ -8,7 +8,8 @@
     android:background="@color/colorProfile">
     <include
         android:id="@+id/all_groups_appbar_layout"
-        layout="@layout/app_bar_layout">
+        layout="@layout/app_bar_layout"
+        >
 
     </include>
 
@@ -27,10 +28,14 @@
 
     <ImageButton
         android:id="@+id/groups_back_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:cropToPadding="true"
+        android:paddingTop="20dp"
+        android:padding="18dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/whitearrow"/>
+        android:src="@drawable/whitearrow"
+        android:background="@color/colorPrimary"/>
 
     <TextView
         android:id="@+id/all_groups"
