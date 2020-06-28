@@ -5,36 +5,39 @@
     android:id="@+id/drawable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background ="@color/colorThis"
     tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <include
             android:id="@+id/main_page_toolbar"
-            layout = "@layout/app_bar_layout"
-            >
-
+            layout = "@layout/app_bar_layout">
         </include>
+
         <TextView
             android:id="@+id/favourites_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/main_page_toolbar"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="Your Favourites"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:text="Favourites!"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_dark"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textColor="@color/colorProfile"
+            android:layout_below="@+id/main_page_toolbar"
+            android:textSize="14sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_favourited_restaurants_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
+
             android:layout_below="@id/favourites_text"
             android:visibility="visible"/>
 

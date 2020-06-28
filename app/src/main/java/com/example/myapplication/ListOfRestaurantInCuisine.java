@@ -56,7 +56,9 @@ public class ListOfRestaurantInCuisine extends AppCompatActivity {
 
     private void DisplayRestaurantsInCuisine() {
 
-        Query SearchCuisinesQuery = allRestaurantsDatabaseReference.orderByChild("cuisineone").equalTo(cuisineName);
+        String CuisineName = cuisineName.toString();
+
+        Query SearchCuisinesQuery = allRestaurantsDatabaseReference.orderByChild(CuisineName).equalTo(cuisineName);
 
         FirebaseRecyclerAdapter<FindRestaurants, RestaurantListActivity.FindRestaurantsViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<FindRestaurants, RestaurantListActivity.FindRestaurantsViewHolder>
