@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
+
+    <TextView
+        android:id="@+id/bestrestauranttext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Best restaurant for you!"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/no_restaurants_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="No restaurants found!"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="45sp"
+        android:textStyle="bold"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calculated_best_restaurant"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bestrestauranttext"
+        android:layout_margin="20dp"/>
+
+
+</RelativeLayout>

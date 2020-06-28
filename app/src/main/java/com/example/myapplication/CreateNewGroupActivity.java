@@ -66,11 +66,12 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
         GroupsRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentUserID).child(groupID);
         GroupsRefList = FirebaseDatabase.getInstance().getReference().child("GroupList").child(currentUserID).child(groupID);
+        GroupsRef.child("members").child(currentUserID).setValue("In group");
 
 
         UserName = (EditText) findViewById(R.id.new_group_name);
         SaveInformationButton = (Button) findViewById(R.id.new_group_save_info_button);
-        ProfileImage = (CircleImageView) findViewById( R.id.new_group_profile_image);
+//        ProfileImage = (CircleImageView) findViewById( R.id.new_group_profile_image);
 
         SaveInformationButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,26 +90,26 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 //            }
 //        });
 
-        UsersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-
-                    if(dataSnapshot.hasChild("profileimage")) {
-                        String image = dataSnapshot.child("profileimage").getValue().toString();
-
-                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
-                    }else{
-                        Toast.makeText(CreateNewGroupActivity.this, "Please select a profile image",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        UsersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()){
+//
+//                    if(dataSnapshot.hasChild("profileimage")) {
+//                        String image = dataSnapshot.child("profileimage").getValue().toString();
+//
+//                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
+//                    }else{
+//                        Toast.makeText(CreateNewGroupActivity.this, "Please select a profile image",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         backButton = (ImageButton) findViewById(R.id.new_group_back_button);
         backButton.bringToFront();

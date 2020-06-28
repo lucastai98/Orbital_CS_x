@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class GroupProfile extends AppCompatActivity {
     private String groupID;
 
     private ImageButton addFriendButton,deleteGroupButton,backButton;
+    private Button calculateButton;
 
 
     @Override
@@ -75,6 +77,7 @@ public class GroupProfile extends AppCompatActivity {
             }
         });
 
+        calculateButton = (Button) findViewById(R.id.calculate_best_restaurant_button);
         addFriendButton = (ImageButton) findViewById(R.id.add_friend_to_group_button);
         deleteGroupButton = (ImageButton) findViewById(R.id.delete_group_button);
         backButton = (ImageButton) findViewById(R.id.group_profile_back_button);
@@ -103,6 +106,17 @@ public class GroupProfile extends AppCompatActivity {
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);
                 finish();
+            }
+        });
+
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent popUpIntent = new Intent(GroupProfile.this,Pop.class);
+                popUpIntent.putExtra("group_id",groupID);
+
+                startActivity(popUpIntent);
             }
         });
 

@@ -96,6 +96,8 @@ public class GroupsActivity extends AppCompatActivity {
 
                         FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child(group_id);
                         FirebaseDatabase.getInstance().getReference().child("GroupList").child(online_user_id).child(group_id);
+                        FirebaseDatabase.getInstance().getReference().child("Groups").child(online_user_id).child(group_id).child("best restaurants");
+
                         Intent profileIntent = new Intent(GroupsActivity.this,CreateNewGroupActivity.class);
                         profileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         profileIntent.putExtra("group_id",group_id);
