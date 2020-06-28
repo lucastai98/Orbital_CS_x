@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background ="@color/colorThis"
+    tools:context=".CuisinesListActivity">
+
+    <include
+        android:id="@+id/find_cuisines_appbar_layout"
+        layout="@layout/app_bar_layout">
+
+    </include>
+
+    <RelativeLayout
+        android:id="@+id/myLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/find_cuisines_appbar_layout">
+
+
+        <TextView
+            android:id="@+id/simpleTextID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Search for cuisines!"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorProfile"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/search_box_input"
+            android:layout_width="260dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/simpleTextID"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/inputs"
+            android:ems="10"
+            android:hint="Search"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/search_cuisines_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/simpleTextID"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="51dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/inputs"
+            android:cropToPadding="true"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/search" />
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_result_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/myLayout"
+        android:layout_margin="5dp"
+        android:layout_alignParentLeft="true"
+        />
+
+
+</RelativeLayout>
