@@ -13,6 +13,16 @@
 
     </include>
 
+    <ImageButton
+        android:id="@+id/cuisine_list_back_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:cropToPadding="true"
+        android:padding="18dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/whitearrow"
+        android:background="@color/colorPrimary" />
+
     <RelativeLayout
         android:id="@+id/cuisineLayout"
         android:layout_width="match_parent"
@@ -45,11 +55,6 @@
         android:layout_alignParentLeft="true"
         />
 
-    <ImageButton
-        android:id="@+id/cuisine_list_back_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/whitearrow" />
+
 
 </RelativeLayout>

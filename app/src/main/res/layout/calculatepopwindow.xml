@@ -23,7 +23,7 @@
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="sadly, not able to be found! (Do you have any restaurants favourited?)"
+        android:text="We can't calculate the best restaurant for you. :( (Do you have any restaurants favourited?)"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/cardview_light_background"
