@@ -44,17 +44,4 @@ android:background="@color/colorThis">
         android:layout_margin="5dp"
         android:layout_alignParentLeft="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/asian_western_list"
-        android:layout_below="@id/restaurants_in_cuisine_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_margin="5dp"
-        android:layout_alignParentLeft="true" />
-
-
-
-
-
 </RelativeLayout>

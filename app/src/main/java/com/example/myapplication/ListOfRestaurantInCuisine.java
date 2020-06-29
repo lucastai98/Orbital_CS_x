@@ -52,11 +52,6 @@ public class ListOfRestaurantInCuisine extends AppCompatActivity {
         RestList.setHasFixedSize(true);
         RestList.setLayoutManager(new LinearLayoutManager(this));
 
-        asianWesternList = (RecyclerView) findViewById(R.id.asian_western_list);
-        asianWesternList.setHasFixedSize(true);
-        asianWesternList.setLayoutManager(new LinearLayoutManager(this));
-        asianWesternList.bringToFront();
-
         backButton = (ImageButton) findViewById(R.id.cuisine_back_button);
         backButton.bringToFront();
 
