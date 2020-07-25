@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationsActivity"></activity>
+        <activity android:name=".FindAllRestaurantsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".LocationsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ListOfRestaurantInCuisine"
             android:parentActivityName=".CuisinesListActivity" />
@@ -41,7 +44,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".RestaurantListActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".LocationsActivity" />
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />

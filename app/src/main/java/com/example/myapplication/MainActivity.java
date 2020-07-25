@@ -230,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
                 SendUserToLocationsActivity();
                 Toast.makeText(this,"Locations",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_restaurants:
+                SendUserToFindAllRestaurantListActivity();
+                Toast.makeText(this,"Find Restaurants",Toast.LENGTH_SHORT).show();
+                break;
             case R.id.nav_logout:
                 mAuth.signOut();
                 SendUserToLoginActivity();
@@ -312,6 +316,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void SendUserToRestaurantListActivity() {
         Intent settingsIntent = new Intent(MainActivity.this, RestaurantListActivity.class);
+        startActivity(settingsIntent);
+
+    }
+    private void SendUserToFindAllRestaurantListActivity() {
+        Intent settingsIntent = new Intent(MainActivity.this, FindAllRestaurantsActivity.class);
         startActivity(settingsIntent);
 
     }
