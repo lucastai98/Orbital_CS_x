@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FindAllRestaurantsActivity">
+    tools:context=".FindAllRestaurantsActivity"
+    android:background ="@color/colorThis">
 
-    <include
+<include
         android:id="@+id/restaurant_list_appbar_layout2"
         layout="@layout/app_bar_layout"/>
 

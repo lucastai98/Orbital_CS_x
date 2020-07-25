@@ -42,7 +42,7 @@ public class RestaurantListActivity extends AppCompatActivity {
     private EditText SearchInputText;
 
     private RecyclerView SearchResultList;
-    ImageButton favouriteButton;
+    ImageButton favouriteButton,backButton;
 
     private String location;
 
@@ -86,6 +86,19 @@ public class RestaurantListActivity extends AppCompatActivity {
 
             }
         });
+        backButton = (ImageButton) findViewById(R.id.restaurant_list_back_button);
+        backButton.bringToFront();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(RestaurantListActivity.this,LocationsActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
+
     }
 
     private void SearchRestaurants(String searchBoxInput) {

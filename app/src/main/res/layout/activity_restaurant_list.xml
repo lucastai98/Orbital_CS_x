@@ -10,6 +10,18 @@
     <include
         android:id="@+id/restaurant_list_appbar_layout"
         layout="@layout/app_bar_layout"/>
+    <ImageButton
+        android:id="@+id/restaurant_list_back_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:cropToPadding="true"
+        android:padding="18dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/whitearrow"
+        android:background="@color/colorPrimary"
+        />
 
     <RelativeLayout
         android:id="@+id/myLayout"

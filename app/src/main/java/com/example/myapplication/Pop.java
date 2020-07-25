@@ -159,8 +159,12 @@ public class Pop extends Activity {
                                             bestRestaurantMap.put("cuisinethree", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("cuisinethree").getValue());
                                             bestRestaurantMap.put("id", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("id").getValue());
                                             bestRestaurantMap.put("imagelink", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("imagelink").getValue());
-                                            bestRestaurantMap.put("unit", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("unit").getValue());
-                                            bestRestaurantMap.put("mall", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("mall").getValue());
+                                            bestRestaurantMap.put("unit1", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("unit1").getValue());
+                                            bestRestaurantMap.put("mall1", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("mall1").getValue());
+                                            bestRestaurantMap.put("unit2", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("unit2").getValue());
+                                            bestRestaurantMap.put("mall2", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("mall2").getValue());
+                                            bestRestaurantMap.put("unit3", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("unit3").getValue());
+                                            bestRestaurantMap.put("mall3", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("mall3").getValue());
                                             bestRestaurantMap.put("name", dataSnapshot.child("Restaurant " + favouriteRestaurant).child("name").getValue());
                                             bestRestaurantMap.put("rank",3-i );
                                             GroupRef.child("best restaurants").child("Restaurant " + favouriteRestaurant).updateChildren(bestRestaurantMap);
@@ -220,14 +224,12 @@ public class Pop extends Activity {
                             }else{
                                 restaurantFavouriteCounter.put(id,2);
                             }
-                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+restaurantFavouriteCounter.keySet());
 
                         }
 
                     }
                     if(dataSnapshot.hasChild("favourite cuisines")){
                         for(final DataSnapshot ds : dataSnapshot.child("favourite cuisines").getChildren()){
-                            System.out.println("##################################"+restaurantFavouriteCounter.keySet());
 
                             final String cuisines = ds.getValue().toString();
                             for(final String key: restaurantFavouriteCounter.keySet()){
@@ -237,13 +239,11 @@ public class Pop extends Activity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot2) {
                                         restaurantFavouriteCounter.putAll(temp);
-                                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+restaurantFavouriteCounter.keySet());
 
                                         if(dataSnapshot2.child("cuisineone").getValue().equals(cuisines) ||
                                                 dataSnapshot2.child("cuisinetwo").getValue().equals(cuisines)||
                                                 dataSnapshot2.child("cuisinethree").getValue().equals(cuisines))
                                         {
-                                            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+restaurantFavouriteCounter.keySet());
 
                                             Integer count = (Integer) restaurantFavouriteCounter.get(key);
 
@@ -302,7 +302,6 @@ public class Pop extends Activity {
             }
             maxEntry=null;
         }
-        System.out.println("*******************************************************"+topThreeRestaurants);
     }
 
 
