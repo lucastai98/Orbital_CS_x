@@ -28,9 +28,10 @@
         android:id="@+id/textLayout"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="-5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
@@ -45,18 +46,8 @@
             android:text="name"
             android:textAlignment="textStart"
             android:textColor="@color/colorProfile"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/all_restaurants_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="location"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorText"
-            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/all_restaurants_type"
@@ -66,7 +57,37 @@
             android:text="type"
             android:textAlignment="textStart"
             android:textColor="@color/colorText"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/all_restaurants_location_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="location_1"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/all_restaurants_location_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="location_2"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/all_restaurants_location_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="location_3"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textSize="13sp" />
 
 
     </LinearLayout>

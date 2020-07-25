@@ -1,18 +1,23 @@
 package com.example.myapplication;
 
 public class FindRestaurants {
-    public String asianorwestern, cuisineone,cuisinetwo,cuisinethree, imagelink , name, mall, unit;
+    public String asianorwestern, cuisineone,cuisinetwo,cuisinethree, imagelink , name, mall1, unit1,mall2,unit2,mall3,unit3;
     long id;
 
-    public FindRestaurants(String asianorwestern, String cuisineone, String cuisinetwo, String cuisinethree, String imagelink, String name, String mall, String unit, long id) {
+    public FindRestaurants(String asianorwestern, String cuisineone, String cuisinetwo, String cuisinethree,
+                           String imagelink, String name, String mall1,String mall2,String mall3, String unit1, String unit2, String unit3, long id) {
         this.asianorwestern = asianorwestern;
         this.cuisineone = cuisineone;
         this.cuisinetwo = cuisinetwo;
         this.cuisinethree = cuisinethree;
         this.imagelink = imagelink;
         this.name = name;
-        this.mall = mall;
-        this.unit = unit;
+        this.mall1 = mall1;
+        this.unit1 = unit1;
+        this.mall2 = mall2;
+        this.unit2 = unit2;
+        this.mall3 = mall3;
+        this.unit3 = unit3;
         this.id = id;
     }
 
@@ -52,12 +57,28 @@ public class FindRestaurants {
         this.name = name;
     }
 
-    public void setMall(String mall) {
-        this.mall = mall;
+    public void setMall1(String mall1) {
+        this.mall1 = mall1;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setUnit1(String unit1) {
+        this.unit1 = unit1;
+    }
+
+    public void setMall2(String mall2) {
+        this.mall2 = mall2;
+    }
+
+    public void setUnit2(String unit2) {
+        this.unit2 = unit2;
+    }
+
+    public void setMall3(String mall3) {
+        this.mall3 = mall3;
+    }
+
+    public void setUnit3(String unit3) {
+        this.unit3 = unit3;
     }
 
     public String getAsianorwestern() {
@@ -84,11 +105,27 @@ public class FindRestaurants {
         return name;
     }
 
-    public String getMall() {
-        return mall;
+    public String getMall1() {
+        return mall1;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getUnit1() {
+        return unit1;
+    }
+
+    public String getMall2() {
+        return mall2;
+    }
+
+    public String getUnit2() {
+        return unit2;
+    }
+
+    public String getMall3() {
+        return mall3;
+    }
+
+    public String getUnit3() {
+        return unit3;
     }
 }

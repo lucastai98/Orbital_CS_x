@@ -226,9 +226,9 @@ public class MainActivity extends AppCompatActivity {
                 SendUserToCuisineActivity();
                 Toast.makeText(this,"Cuisines",Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.nav_find_restaurants:
-                SendUserToRestaurantListActivity();
-                Toast.makeText(this,"Find Restaurants",Toast.LENGTH_SHORT).show();
+            case R.id.nav_locations:
+                SendUserToLocationsActivity();
+                Toast.makeText(this,"Locations",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 mAuth.signOut();
@@ -242,24 +242,31 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingsIntent);
 
     }
+    private void SendUserToLocationsActivity() {
+        Intent settingsIntent = new Intent(MainActivity.this, LocationsActivity.class);
+        startActivity(settingsIntent);
+
+    }
 
     private void DisplayAllRestaurants() {
         Query myRestaurants = myRestaurantListRef.orderByChild("name");
 
-        FirebaseRecyclerAdapter<FindRestaurants, MainActivity.RestaurantListViewHolder> firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<FindRestaurants, MainActivity.RestaurantListViewHolder>
+        FirebaseRecyclerAdapter<FindRestaurants, RestaurantListActivity.FindRestaurantsViewHolder> firebaseRecyclerAdapter
+                = new FirebaseRecyclerAdapter<FindRestaurants, RestaurantListActivity.FindRestaurantsViewHolder>
                 (
                         FindRestaurants.class,
                         R.layout.all_restaurants_display_layout,
-                        MainActivity.RestaurantListViewHolder.class,
+                        RestaurantListActivity.FindRestaurantsViewHolder.class,
                         myRestaurants
                 )
         {
 
             @Override
-            protected void populateViewHolder(final MainActivity.RestaurantListViewHolder viewHolder, final FindRestaurants find, final int i) {
+            protected void populateViewHolder(final RestaurantListActivity.FindRestaurantsViewHolder viewHolder, final FindRestaurants find, final int i) {
                 viewHolder.setName(find.getName());
-                viewHolder.setLocation(find.getMall()+", "+find.getUnit());
+                viewHolder.setLocation1(find.getMall1() + " " + find.getUnit1());
+                viewHolder.setLocation2(find.getMall2() + " " + find.getUnit2());
+                viewHolder.setLocation3(find.getMall3() + " " + find.getUnit3());
                 viewHolder.setRestaurantPicture(find.getImagelink());
                 viewHolder.setType(find.getCuisineone()+", "+find.getCuisinetwo());
                 viewHolder.setFavouriteButtonInvisible();
@@ -269,38 +276,38 @@ public class MainActivity extends AppCompatActivity {
 
         myRestaurantList.setAdapter(firebaseRecyclerAdapter);
     }
-    public static class RestaurantListViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-
-        public RestaurantListViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setRestaurantPicture(String url) {
-            CircleImageView myImage = (CircleImageView) mView.findViewById(R.id.all_restaurants_profile_image);
-            Picasso.get().load(url).placeholder(R.drawable.profile).into(myImage);
-        }
-        public void setName (String currentName){
-            TextView Name = (TextView) mView.findViewById(R.id.all_restaurants_name);
-            Name.setText(currentName);
-        }
-
-        public void setLocation (String currentLocation){
-            TextView location = (TextView) mView.findViewById(R.id.all_restaurants_location);
-            location.setText(currentLocation);
-        }
-        public void setType (String currentType){
-            TextView type = (TextView) mView.findViewById(R.id.all_restaurants_type);
-            type.setText(currentType);
-        }
-        public void setFavouriteButtonInvisible(){
-            ImageButton favouriteButton = (ImageButton) mView.findViewById(R.id.favourite_button);
-            favouriteButton.setVisibility(View.GONE);
-
-        }
-
-    }
+//    public static class RestaurantListViewHolder extends RecyclerView.ViewHolder{
+//        View mView;
+//
+//        public RestaurantListViewHolder(View itemView) {
+//            super(itemView);
+//            mView = itemView;
+//        }
+//
+//        public void setRestaurantPicture(String url) {
+//            CircleImageView myImage = (CircleImageView) mView.findViewById(R.id.all_restaurants_profile_image);
+//            Picasso.get().load(url).placeholder(R.drawable.profile).into(myImage);
+//        }
+//        public void setName (String currentName){
+//            TextView Name = (TextView) mView.findViewById(R.id.all_restaurants_name);
+//            Name.setText(currentName);
+//        }
+//
+//        public void setLocation (String currentLocation){
+//            TextView location = (TextView) mView.findViewById(R.id.all_restaurants_location);
+//            location.setText(currentLocation);
+//        }
+//        public void setType (String currentType){
+//            TextView type = (TextView) mView.findViewById(R.id.all_restaurants_type);
+//            type.setText(currentType);
+//        }
+//        public void setFavouriteButtonInvisible(){
+//            ImageButton favouriteButton = (ImageButton) mView.findViewById(R.id.favourite_button);
+//            favouriteButton.setVisibility(View.GONE);
+//
+//        }
+//
+//    }
 
 
     private void SendUserToRestaurantListActivity() {

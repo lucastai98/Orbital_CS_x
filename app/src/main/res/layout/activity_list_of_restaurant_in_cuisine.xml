@@ -22,7 +22,21 @@ android:background="@color/colorThis">
         android:src="@drawable/whitearrow"
         android:background="@color/colorPrimary" />
 
-<TextView
+    <ImageButton
+        android:id="@+id/cuisine_favourite_button"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/favbg"
+        android:cropToPadding="true"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/greyheart" />
+
+    <TextView
     android:id="@+id/restaurants_in_cuisine_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -28,8 +28,8 @@
         android:title="Cuisines"/>
 <!--        android:icon="@drawable/home"/>-->
     <item
-        android:id="@+id/nav_find_restaurants"
-        android:title="Find Restaurants"/>
+        android:id="@+id/nav_locations"
+        android:title="Malls"/>
 <!--        android:icon="@drawable/home"/>-->
     <item
         android:id="@+id/nav_settings"
