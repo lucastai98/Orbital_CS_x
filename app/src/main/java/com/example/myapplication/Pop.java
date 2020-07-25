@@ -149,7 +149,7 @@ public class Pop extends Activity {
                                 if(favouriteRestaurant==null){
                                     bestRestaurantRef.removeValue();
                                     bestRestaurantForYou.setVisibility(View.VISIBLE);
-                                    for(int i = 0 ;i<3;i++) {
+                                    for(int i = 0 ;i<topThreeRestaurants.size();i++) {
                                         HashMap bestRestaurantMap = new HashMap();
                                         if(topThreeRestaurants.get(i)!=null) {
                                             favouriteRestaurant = topThreeRestaurants.get(i);
