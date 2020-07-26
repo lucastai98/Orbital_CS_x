@@ -6,6 +6,8 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,9 @@ public class Pop extends Activity {
 
     private RecyclerView ourBestRestaurant;
     private TextView noRestaurantsFound,bestRestaurantForYou;
+    ImageButton clementiMallButton, starvistaButton, jemButton;
+    Button anywhereButton;
+    TextView whereText;
 
     private HashMap<String, Integer> restaurantFavouriteCounter;
     private HashMap<String, Integer> temp;
@@ -68,6 +73,12 @@ public class Pop extends Activity {
 //        location = getIntent().getExtras().get("location").toString();
         groupID = getIntent().getExtras().get("group_id").toString();
 
+        clementiMallButton = (ImageButton) findViewById(R.id.clementi_mall);
+        jemButton = (ImageButton) findViewById(R.id.jem_mall);
+        starvistaButton = (ImageButton) findViewById(R.id.star_vista_mall);
+        anywhereButton = (Button) findViewById(R.id.anywhere_button);
+        whereText = (TextView) findViewById(R.id.where_are_you_text);
+
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
 
@@ -93,7 +104,67 @@ public class Pop extends Activity {
 
         this.setFinishOnTouchOutside(true);
 
-        CalculateBestRestaurant();
+        noRestaurantsFound.setVisibility(View.GONE);
+        bestRestaurantForYou.setVisibility(View.GONE);
+        clementiMallButton.bringToFront();
+        jemButton.bringToFront();
+        starvistaButton.bringToFront();
+        anywhereButton.bringToFront();
+
+
+        clementiMallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clementiMallButton.setVisibility(View.GONE);
+                starvistaButton.setVisibility(View.GONE);
+                jemButton.setVisibility(View.GONE);
+                anywhereButton.setVisibility(View.GONE);
+                whereText.setVisibility(View.GONE);
+
+                CalculateBestRestaurant("The Clementi Mall");
+
+            }
+        });
+        starvistaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clementiMallButton.setVisibility(View.GONE);
+                starvistaButton.setVisibility(View.GONE);
+                jemButton.setVisibility(View.GONE);
+                anywhereButton.setVisibility(View.GONE);
+                whereText.setVisibility(View.GONE);
+
+                CalculateBestRestaurant("The Star Vista");
+            }
+        });
+        jemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clementiMallButton.setVisibility(View.GONE);
+                starvistaButton.setVisibility(View.GONE);
+                jemButton.setVisibility(View.GONE);
+                anywhereButton.setVisibility(View.GONE);
+                whereText.setVisibility(View.GONE);
+
+                CalculateBestRestaurant("JEM");
+
+            }
+        });
+        anywhereButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clementiMallButton.setVisibility(View.GONE);
+                starvistaButton.setVisibility(View.GONE);
+                jemButton.setVisibility(View.GONE);
+                anywhereButton.setVisibility(View.GONE);
+                whereText.setVisibility(View.GONE);
+
+                CalculateBestRestaurant("anywhere");
+
+            }
+        });
+//        Toast.makeText(this,"Calculating...",Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -127,7 +198,7 @@ public class Pop extends Activity {
     }
 
 
-    private void CalculateBestRestaurant() {
+    private void CalculateBestRestaurant(final String location) {
 
 
         GroupMembersRef.addValueEventListener(new ValueEventListener() {
@@ -136,7 +207,7 @@ public class Pop extends Activity {
 
                     if(xdataSnapshot.exists()) {
 
-                        CollateAllMembers((Map<String, Object>) xdataSnapshot.getValue());
+                        CollateAllMembers((Map<String, Object>) xdataSnapshot.getValue(),location);
 
                         RestaurantsRef.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -172,7 +243,7 @@ public class Pop extends Activity {
 
                                     }
 
-
+                                    bestRestaurantForYou.setVisibility(View.VISIBLE);
                                     noRestaurantsFound.setVisibility(View.GONE);
 
                                     DisplayFavouriteRestaurant();
@@ -205,7 +276,7 @@ public class Pop extends Activity {
 
     }
 
-    private void CollateAllMembers(Map<String,Object> users) {
+    private void CollateAllMembers(Map<String,Object> users, final String mall) {
 
         for (Map.Entry<String, Object> entry : users.entrySet()) {
 
@@ -216,13 +287,33 @@ public class Pop extends Activity {
                     if(dataSnapshot.hasChild("favourite restaurants")){
 
                         for(DataSnapshot ds : dataSnapshot.child("favourite restaurants").getChildren()){
+                            String mall1 ="";
+                            String mall2 ="";
+                            String mall3 = "";
+                            if(ds.child("mall1").getValue()!=null){
+                                mall1 = ds.child("mall1").getValue().toString();
+                            }
+                            if(ds.child("mall2").getValue()!=null){
+                                mall2 = ds.child("mall2").getValue().toString();
+                            }
+                            if(ds.child("mall3").getValue()!=null){
+                                mall3 = ds.child("mall3").getValue().toString();
+                            }
 
-                            String id = ds.child("id").getValue().toString();
-                            if(restaurantFavouriteCounter.containsKey(id)){
-                                Integer count = (Integer) restaurantFavouriteCounter.get(id);
-                                restaurantFavouriteCounter.put(id,(Integer) count+2);
-                            }else{
-                                restaurantFavouriteCounter.put(id,2);
+                            if(
+                                    mall1.equals(mall) ||
+                                    mall2.equals(mall) ||
+                                    mall3.equals(mall) ||
+                                    mall.equals("anywhere")
+                            ) {
+
+                                String id = ds.child("id").getValue().toString();
+                                if (restaurantFavouriteCounter.containsKey(id)) {
+                                    Integer count = (Integer) restaurantFavouriteCounter.get(id);
+                                    restaurantFavouriteCounter.put(id, (Integer) count + 2);
+                                } else {
+                                    restaurantFavouriteCounter.put(id, 2);
+                                }
                             }
 
                         }
