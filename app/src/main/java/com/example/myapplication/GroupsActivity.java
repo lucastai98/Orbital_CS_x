@@ -134,7 +134,7 @@ public class GroupsActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Groups, GroupsActivity.GroupsViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Groups, GroupsActivity.GroupsViewHolder>(
                         Groups.class,
-                        R.layout.all_users_display_layout,
+                        R.layout.all_groups_display_layout,
                         GroupsActivity.GroupsViewHolder.class,
                         GroupsRefList
                 ) {
@@ -173,7 +173,7 @@ public class GroupsActivity extends AppCompatActivity {
                                     }
                                     final String userUsername = "";
 
-                                    GroupsViewHolder.setUsername(userUsername);
+                                    //GroupsViewHolder.setUsername(userUsername);
 
                                     GroupsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -222,10 +222,10 @@ public class GroupsActivity extends AppCompatActivity {
             TextView myName = (TextView) mView.findViewById(R.id.all_users_fullname);
             myName.setText(fullname);
         }
-        public void setUsername (String username){
-            TextView myUsername = (TextView) mView.findViewById(R.id.all_users_username);
-            myUsername.setText("@"+username);
-        }
+//        public void setUsername (String username){
+//            TextView myUsername = (TextView) mView.findViewById(R.id.all_users_username);
+//            myUsername.setText("@"+username);
+//        }
 
 
     }

@@ -35,7 +35,7 @@
 
     <item
         android:id="@+id/nav_locations"
-        android:title="Malls"/>
+        android:title="Locations"/>
 <!--        android:icon="@drawable/home"/>-->
 
 
